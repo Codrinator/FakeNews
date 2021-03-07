@@ -1,3 +1,4 @@
+#from bs4 import BeautifulSoup, SoupStrainer
 from extract import collect_news
 import json
 
@@ -24,7 +25,7 @@ def print_dictionary(dictionary):
 
 if __name__ == "__main__":
     # Gather news from websites and separate in json files
-    # collect_news()
+    collect_news()
 
     # Read news json files
     true_news = get_news_data("trueNews.json")

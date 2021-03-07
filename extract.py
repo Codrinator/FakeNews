@@ -1,11 +1,12 @@
-from bs4 import BeautifulSoup, SoupStrainer
+from bs4 import SoupStrainer, BeautifulSoup
+from bs4 import BeautifulSoup as soup
 import httplib2
 import requests
 import json
 
 # News sites links
 start_urls = [["https://www.protv.ro/"], ["https://www.libertatea.ro/"],
-              ["https://www.timesnewroman.ro/"], ["https://www.catavencii.ro/"]]
+              ["https://www.timesnewroman.ro/"], ["https://www.timpurigrele.ro/"]]#["https://7lucruri.ro/"]]#["https://www.catavencii.ro/"]]
 
 # Prefix of desired news articles for each site
 mainUrls = [['https://stirileprotv.ro/stiri/auto/', 'https://stirileprotv.ro/stiri/international/',
@@ -17,20 +18,27 @@ mainUrls = [['https://stirileprotv.ro/stiri/auto/', 'https://stirileprotv.ro/sti
              'https://www.timesnewroman.ro/sport/','https://www.timesnewroman.ro/monden/',
              'https://www.timesnewroman.ro/life-death/',
              'https://www.timesnewroman.ro/descopera-romania/'],
-            ["https://www.catavencii.ro/"]]
+            ["https://www.timpurigrele.ro/"]]
+            #["https://7lucruri.ro/"]]
+           # ["https://www.catavencii.ro/"]]
 
 # HTML title tag function call for each site
 listClassTitle = ['soup.find("h1")', 'soup.find("h1")', 'soup.find("h1", {"class": "mb-4 mb-xl-5"})',
-                  'soup.find("h1", {"class": "post-title"}, {"itemprop":"headline"})']
+                  'soup.find("h3", {"class": "post-title entry-title"})']
+                  #'soup.find("h1", {"class": "entry-title"})']
+                 # 'soup.find("h1", {"class": "post-title"}, {"itemprop":"headline"})']
 
 # HTML content tag function call for each site
 listClassArticle = ['soup.find("div", {"itemprop": "articleBody"})',
                     'soup.find("div", {"class": "article-body js-copy-text"})',
                     'soup.find("div", {"class": "content-container page-editor-content mb-3 mb-md-5"})',
-                    'soup.find("div", {"class": "post-content"})'
-                    ]
+                    'soup.find("div", {"class": "post-body-container"})']
+                    #'soup.find("div", {"class": "post-inner-wrapper"})'
+                    #'soup.find("div", {"class": "post-content"})'
+
 # Number of desired articles from each site
-max_articles = [8,5,19,10]
+max_articles = [-1,-1,-1,30]
+
 
 # Json file names for the two news categories
 json_files = ["trueNews.json", "fakeNews.json"]
@@ -53,15 +61,23 @@ def crawlOnPage(search_urls, main_urls_list, link_list, counter, max_articles):
             for link in BeautifulSoup(response, 'html.parser', parse_only=SoupStrainer('a'),from_encoding="utf-8"):
                 if link.has_attr('href'):
                     for news_type in main_urls_list:
+                        #print("here")
+                        #print(soup)
+                        #print(link['href'])
                         if link['href'].startswith(news_type) and len(link['href'])-len(news_type)>30:
+                            #print("there")
+                            print(link['href'])
                             link_list.add(link['href'])
                             new_links.add(link['href'])
                             if (len(link_list) > max_articles):
                                 return
+
+
+
         else:
             print("Main website couldn't be reached: " + str(search_url))
     # Recall the function
-    if counter < 8:
+    if counter < 20:
         crawlOnPage(new_links, main_urls_list, link_list, counter, max_articles)
 
 
@@ -69,7 +85,7 @@ def extractText(myUrl, titleClass, articleClass):
     ''' Extract title and text from article link '''
     # Request link access
     page = requests.get(myUrl)
-
+    soup = BeautifulSoup(page.content, 'html.parser')
     # Get title from specific parameter function call
     find_title = eval(titleClass)
     if find_title != None:
@@ -84,7 +100,7 @@ def extractText(myUrl, titleClass, articleClass):
         return
 
     # Get the article content paragraphs
-    paragraphs_tags = article_content.find_all('p') # Find all row tags in that table
+    paragraphs_tags = article_content.find_all('span') # Find all row tags in that table
     if not paragraphs_tags:
         paragraphs = 'nothing here'
     else:
@@ -122,7 +138,7 @@ def collect_news():
         # Get content for current site links
         for link in finalLinkList:
             data[link] = extractText(link, titleClass, articleClass)
-            if data[link] is None:
+            if data[link] is None:# or "nothing here" in data[link]:
                 del data[link]
 
         # Add news in site's category json file
