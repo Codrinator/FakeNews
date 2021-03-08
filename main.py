@@ -1,5 +1,5 @@
-#from bs4 import BeautifulSoup, SoupStrainer
 from extract import collect_news
+import Config
 import json
 
 
@@ -25,7 +25,10 @@ def print_dictionary(dictionary):
 
 if __name__ == "__main__":
     # Gather news from websites and separate in json files
-    collect_news()
+    #collect_news(Config.fake_news_json, Config.start_fake_urls, Config.main_fake_urls, Config.html_fake_titles,
+                 #Config.html_fake_articles, Config.fake_max_articles, Config.fake_paragraph_tags)
+    #collect_news(Config.true_news_json, Config.start_true_urls, Config.main_true_urls, Config.html_true_titles,
+                 #Config.html_true_articles, Config.true_max_articles, Config.true_paragraph_tags)
 
     # Read news json files
     true_news = get_news_data("trueNews.json")
@@ -37,8 +40,8 @@ if __name__ == "__main__":
 
     # Print news data info
     print("\n   True News\nNumber of articles:", len(true_news), "\nNumber of words:", true_news_words)
-    print_dictionary(true_news)
+    #print_dictionary(true_news)
     print("\n   Fake News\nNumber of articles:", len(fake_news), "\nNumber of words:", fake_news_words)
-    print_dictionary(fake_news)
+    #print_dictionary(fake_news)
     print("\n   Total News\nNumber of articles:", len(true_news)+len(fake_news))
     print("Number of words:", fake_news_words + true_news_words)

@@ -4,45 +4,6 @@ import httplib2
 import requests
 import json
 
-# News sites links
-start_urls = [["https://www.protv.ro/"], ["https://www.libertatea.ro/"],
-              ["https://www.timesnewroman.ro/"], ["https://www.timpurigrele.ro/"]]#["https://7lucruri.ro/"]]#["https://www.catavencii.ro/"]]
-
-# Prefix of desired news articles for each site
-mainUrls = [['https://stirileprotv.ro/stiri/auto/', 'https://stirileprotv.ro/stiri/international/',
-             'https://stirileprotv.ro/stiri/actualitate/', 'https://stirileprotv.ro/stiri/sanatate/',
-             'https://stirileprotv.ro/stiri/socant/', 'https://stirileprotv.ro/stiri/stiinta/',
-             'https://stirileprotv.ro/stiri/financiar/'],
-            ['https://www.libertatea.ro/stiri/'],
-            ['https://www.timesnewroman.ro/it-stiinta/','https://www.timesnewroman.ro/politic/',
-             'https://www.timesnewroman.ro/sport/','https://www.timesnewroman.ro/monden/',
-             'https://www.timesnewroman.ro/life-death/',
-             'https://www.timesnewroman.ro/descopera-romania/'],
-            ["https://www.timpurigrele.ro/"]]
-            #["https://7lucruri.ro/"]]
-           # ["https://www.catavencii.ro/"]]
-
-# HTML title tag function call for each site
-listClassTitle = ['soup.find("h1")', 'soup.find("h1")', 'soup.find("h1", {"class": "mb-4 mb-xl-5"})',
-                  'soup.find("h3", {"class": "post-title entry-title"})']
-                  #'soup.find("h1", {"class": "entry-title"})']
-                 # 'soup.find("h1", {"class": "post-title"}, {"itemprop":"headline"})']
-
-# HTML content tag function call for each site
-listClassArticle = ['soup.find("div", {"itemprop": "articleBody"})',
-                    'soup.find("div", {"class": "article-body js-copy-text"})',
-                    'soup.find("div", {"class": "content-container page-editor-content mb-3 mb-md-5"})',
-                    'soup.find("div", {"class": "post-body-container"})']
-                    #'soup.find("div", {"class": "post-inner-wrapper"})'
-                    #'soup.find("div", {"class": "post-content"})'
-
-# Number of desired articles from each site
-max_articles = [-1,-1,-1,30]
-
-
-# Json file names for the two news categories
-json_files = ["trueNews.json", "fakeNews.json"]
-
 
 def crawlOnPage(search_urls, main_urls_list, link_list, counter, max_articles):
     """ Crawl the links of a certain page and add them to a set """
@@ -61,19 +22,18 @@ def crawlOnPage(search_urls, main_urls_list, link_list, counter, max_articles):
             for link in BeautifulSoup(response, 'html.parser', parse_only=SoupStrainer('a'),from_encoding="utf-8"):
                 if link.has_attr('href'):
                     for news_type in main_urls_list:
-                        #print("here")
-                        #print(soup)
-                        #print(link['href'])
-                        if link['href'].startswith(news_type) and len(link['href'])-len(news_type)>30:
-                            #print("there")
-                            print(link['href'])
+                        if("kmkz" in news_type):
+                            new_link = news_type + link['href']
+                            if len(link['href'])>30:
+                                link_list.add(new_link)
+                                new_links.add(new_link)
+                                if (len(link_list) > max_articles):
+                                    return
+                        elif link['href'].startswith(news_type) and len(link['href'])-len(news_type)>30 and "more" not in link['href']:
                             link_list.add(link['href'])
                             new_links.add(link['href'])
                             if (len(link_list) > max_articles):
                                 return
-
-
-
         else:
             print("Main website couldn't be reached: " + str(search_url))
     # Recall the function
@@ -81,7 +41,7 @@ def crawlOnPage(search_urls, main_urls_list, link_list, counter, max_articles):
         crawlOnPage(new_links, main_urls_list, link_list, counter, max_articles)
 
 
-def extractText(myUrl, titleClass, articleClass):
+def extractText(myUrl, titleClass, articleClass, tag):
     ''' Extract title and text from article link '''
     # Request link access
     page = requests.get(myUrl)
@@ -92,7 +52,6 @@ def extractText(myUrl, titleClass, articleClass):
         title = find_title.text.strip()
     else:
         title = 'nothing here'
-
     # Get article text from specific parameter function call
     article_content = eval(articleClass) # Locate that table tag
     if not article_content:
@@ -100,7 +59,7 @@ def extractText(myUrl, titleClass, articleClass):
         return
 
     # Get the article content paragraphs
-    paragraphs_tags = article_content.find_all('span') # Find all row tags in that table
+    paragraphs_tags = article_content.find_all(tag) # Find all row tags in that table
     if not paragraphs_tags:
         paragraphs = 'nothing here'
     else:
@@ -114,7 +73,7 @@ def extractText(myUrl, titleClass, articleClass):
     return title, paragraphs
 
 
-def collect_news():
+def collect_news(news_json, start_urls, main_urls, html_titles, html_articles, max_articles, tags):
     ''' Collect the news from all the provided web sites '''
     ''' Separate articles in true/fake news json files'''
 
@@ -122,27 +81,27 @@ def collect_news():
     counter = 0
 
     # Iterate through the information of each site
-    for start_url, mainUrl, articleClass, titleClass in zip(start_urls, mainUrls, listClassArticle, listClassTitle):
+    for start_url, main_url, html_article, html_title, tag in zip(start_urls, main_urls, html_articles, html_titles, tags):
         # Link and content dictionary for current site
         data = {}
         # All links found in current site
-        finalLinkList = set()
+        final_link_list = set()
         # Crawl and get links for current site
-        crawlOnPage(start_url, mainUrl, finalLinkList, 0, max_articles[counter])
+        crawlOnPage(start_url, main_url, final_link_list, 0, max_articles[counter])
 
         # Add over true/fake news if already there
-        if counter % 2 == 1:
-            with open(json_files[counter//2], "r", encoding="utf-8") as jsonObject:
+        if counter != 0:
+            with open(news_json, "r", encoding="utf-8") as jsonObject:
                 data = json.load(jsonObject)
 
         # Get content for current site links
-        for link in finalLinkList:
-            data[link] = extractText(link, titleClass, articleClass)
+        for link in final_link_list:
+            data[link] = extractText(link, html_title, html_article, tag)
             if data[link] is None:# or "nothing here" in data[link]:
                 del data[link]
 
         # Add news in site's category json file
-        with open(json_files[counter//2], "w+",encoding="utf-8") as jsonObject:
+        with open(news_json, "w+",encoding="utf-8") as jsonObject:
             json.dump(data, jsonObject, sort_keys=True, ensure_ascii=False, indent=1)
 
         # Add to site iterator
