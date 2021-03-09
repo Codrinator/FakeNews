@@ -1,14 +1,15 @@
 from extract import collect_news
 import Config
 import json
+from nltk import word_tokenize
 
 def Preprocessing(text,stop_words):
     newData = []
     for item in text.values():
         newData.append(item[0] + item[1])
     for i in range(0,len(newData)):
-        newData[i] = [i.lower() for i in word_tokenize(newData[i]) if i.isalpha()]
-        newData[i] = [i for i in newData[1][i] if i not in stop_words]
+        newData[i] = [index.lower() for index in word_tokenize(newData[i]) if index.isalpha()]
+        newData[i] = [index for index in newData[i] if index not in stop_words]
     return newData
 
 
@@ -77,7 +78,11 @@ if __name__ == "__main__":
     with open("stopwords.txt",encoding="utf-8") as f:
         stopwords = f.read().split()
     trueNews = Preprocessing(true_news,stopwords)
-    print(trueNews)
+    fakeNews = Preprocessing(fake_news,stopwords)
+    sum = 0
+    for i in fakeNews:
+        sum += len(i)
+    print(sum)
     """true_news_data = []
     for i in range(0, len(true_news_words[])):
         merged_news[1][i] = [i.lower() for i in word_tokenize(merged_news[1][i]) if i.isalpha()]
