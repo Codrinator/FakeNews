@@ -2,6 +2,18 @@ from extract import collect_news
 import Config
 import json
 from nltk import word_tokenize
+from nltk.stem.snowball import SnowballStemmer
+#import sys
+#sys.setdefaultencoding('utf-8')
+#reload(sys)
+
+RS = SnowballStemmer('romanian', ignore_stopwords=True)# RomanianStemmer()
+
+def stemText(text):
+    stemmed_words = []
+    for item in text:
+        stemmed_words.append([RS.stem(i) for i in item])
+    return stemmed_words
 
 def Preprocessing(text,stop_words):
     newData = []
@@ -83,6 +95,10 @@ if __name__ == "__main__":
     for i in fakeNews:
         sum += len(i)
     print(sum)
+    stemmed_trueNews = stemText(trueNews)
+    stemmed_fakeNews = stemText(fakeNews)
+    print(stemmed_trueNews)
+    print(stemmed_fakeNews)
     """true_news_data = []
     for i in range(0, len(true_news_words[])):
         merged_news[1][i] = [i.lower() for i in word_tokenize(merged_news[1][i]) if i.isalpha()]
