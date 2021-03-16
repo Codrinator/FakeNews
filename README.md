@@ -3,7 +3,7 @@ Project for the **NLP** course at the [Faculty of Computer Science Iași](https:
 ## Team - [Trello](https://trello.com/b/n95RrjEI/tiln)
   * [Ioana Parfene](https://github.com/IoanaParfene)
   * [Codrin Donciu](https://github.com/Codrinator)
-  * [Alexandru Panainte]()
+  * [Alexandru Panainte](https://github.com/AlexandruPanainte)
 ## Implementation Status
 <img src="https://user-images.githubusercontent.com/57050677/111376801-96596200-86a8-11eb-9bd8-ec8e848b735e.jpg" height="500"><br /> <br />
 ### Gathered Data 
