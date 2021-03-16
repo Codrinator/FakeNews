@@ -2,7 +2,8 @@ import preprocessing
 import scraper
 import testing
 import corpus
-
+from sklearn.feature_extraction.text import CountVectorizer
+import pandas as pd
 
 if __name__ == "__main__":
     # Gather news from websites and separate in json files
@@ -21,5 +22,14 @@ if __name__ == "__main__":
 
     # Get news category vocabularies
     true_vocabulary = preprocessing.get_vocabulary(true_pre_data)
-    fake_vocabulary = preprocessing.get_vocabulary(fake_pre_data)
-    testing.get_vocabulary_word_count(true_vocabulary, fake_vocabulary)
+  #  fake_vocabulary = preprocessing.get_vocabulary(fake_pre_data)
+  #  testing.get_vocabulary_word_count(true_vocabulary, fake_vocabulary)
+
+    cv = CountVectorizer(analyzer = preprocessing.preprocess_cv)
+    tokenized_data = []
+    for item in true_news_corpus.values():
+        tokenized_data.append([item[0] + item[1]])
+    
+    X = cv.fit_transform(tokenized_data)
+    df = pd.DataFrame(X.toarray(), columns=cv.get_feature_names())
+    print(df.head(10))

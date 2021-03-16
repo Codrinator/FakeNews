@@ -14,9 +14,7 @@ def get_stopwords():
 
 def tokenize_data(news_data, stop_words):
     """ Merge title and content, lower strings, tokenize, remove non-alpha characters, remove stop-words """
-    tokenized_data = []
-    for item in news_data.values():
-        tokenized_data.append(item[0] + item[1])
+    tokenized_data = news_data
     # Tokenize, remove stop-words
     for i in range(0,len(tokenized_data)):
         tokenized_data[i] = [index.lower() for index in word_tokenize(tokenized_data[i]) if index.isalpha()]
@@ -77,4 +75,15 @@ def get_vocabulary(news_data):
                 vocabulary[word] = 1
             else:
                 vocabulary[word] += 1
-    return vocabulary
+
+    all_words = []
+    for key in vocabulary.keys():
+        all_words.append(key)
+    return all_words
+
+def preprocess_cv(news_data):
+    """ Preprocess wither fake or true news data """
+    stop_words = get_stopwords()
+    tokenized_data = tokenize_data(news_data, stop_words)
+    stemmed_data = stem_data(tokenized_data)
+    return stemmed_data
