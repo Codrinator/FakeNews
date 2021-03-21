@@ -1,10 +1,11 @@
 # Fake News Detection(Romanian)
 Project for the **NLP** course at the [Faculty of Computer Science Iași](https://www.info.uaic.ro/en/home-page-2/).
-## Team
+## Team - [Trello](https://trello.com/b/n95RrjEI/tiln)
   * [Ioana Parfene](https://github.com/IoanaParfene)
   * [Codrin Donciu](https://github.com/Codrinator)
-  * [Alexandru Panainte]()
+  * [Alexandru Panainte](https://github.com/AlexandruPanainte)
 ## Implementation Status
+<img src="https://user-images.githubusercontent.com/57050677/111376801-96596200-86a8-11eb-9bd8-ec8e848b735e.jpg" height="500"><br /> <br />
 ### Gathered Data 
 &nbsp;&nbsp;&nbsp;&nbsp; **True News**(200 000 words)
   * [ProTV](https://stirileprotv.ro/) - 42,000 
@@ -30,7 +31,7 @@ Project for the **NLP** course at the [Faculty of Computer Science Iași](https:
 <hr style="border:2px solid gray"> </hr>
 
 ## Progress
-### Week 3
+### Week 4
 
 &nbsp;&nbsp;&nbsp;&nbsp;**Ioana**
   * Added **7lucruri** and **TimpuriGrele** articles
