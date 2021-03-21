@@ -1,5 +1,7 @@
 from nltk.stem.snowball import SnowballStemmer
 from nltk import word_tokenize
+import numpy as np
+import random
 
 # Romanian stemmer
 RS = SnowballStemmer('romanian', ignore_stopwords=True)
@@ -29,6 +31,10 @@ def stem_data(text):
     stemmed_data = []
     for item in text:
         stemmed_data.append([RS.stem(i) for i in item])
+    for i in range(0,len(stemmed_data)):
+        stemmed_data[i] = [index for index in stemmed_data[i] if len(index) < 18]
+        stemmed_data[i] = [index for index in stemmed_data[i] if "ascultare" not in index]
+        stemmed_data[i] = [index for index in stemmed_data[i] if "aplicații" not in index]
     return stemmed_data
 
 
@@ -68,13 +74,83 @@ def get_preprocessed_data():
     return true_pre_data, fake_pre_data
 
 
-def get_vocabulary(news_data):
+def merge_news(true, fake):
+    """ Merge true and fake news """
+    merged_data = []
+    for item in true:
+        merged_data.append((1, item))
+    for item in fake:
+        merged_data.append((0, item))
+
+    random.shuffle(merged_data)
+
+    for item in range(0, len(merged_data)):
+        merged_data[item] = [merged_data[item][0], merged_data[item][1]]
+
+    return merged_data
+
+
+def get_word_frequency(news_data):
+    """ Count the apparitions of the vocabulary words """
+    word_frequency = dict()
+    for item in news_data:
+        for word in item[1]:
+            if word in word_frequency.keys():
+                word_frequency[word] +=1
+            else:
+                word_frequency[word] = 1
+    word_frequency = {k: v for k, v in sorted(word_frequency.items(), key=lambda item: item[1], reverse=True)}
+    return word_frequency
+
+
+def get_vocabulary(news_data, word_frequency):
     """ Make the vocabulary of a data category """
     vocabulary = dict()
-    for item in news_data:
-        for word in item:
-            if word not in vocabulary.keys():
-                vocabulary[word] = 1
-            else:
-                vocabulary[word] += 1
+    counter = 0
+    for key in word_frequency.keys():
+        vocabulary[key] = counter
+        counter += 1
     return vocabulary
+
+
+def one_hot(text, vocabulary):
+    hot_vector = [0]*len(vocabulary)
+    for word in text:
+        if word in vocabulary.keys():
+            hot_vector[vocabulary[word]] += 1
+    return hot_vector
+
+
+def bag_of_words(news_data, vocabulary):
+    """ Count the apparitions of the vocabulary words """
+    count_vectorizer = []
+    for item in news_data:
+        count_vectorizer.append([item[0], one_hot(item[1], vocabulary)])
+    return count_vectorizer
+
+
+def count_vectorizer_word_amount(news_data, vocabulary, number_of_words):
+    """ Get BoW for a chosen number of words """
+    new_vocabulary = dict()
+    for key, value in vocabulary.items():
+        if value < number_of_words:
+            new_vocabulary[key] = value
+    count_vectorizer = bag_of_words(news_data, new_vocabulary)
+    return count_vectorizer
+
+
+def count_vectorizer_word_count(news_data, word_frequency, vocabulary, minimum_apparitions):
+    """ Get BoW for words that appear at least a chosen number of times """
+    new_vocabulary = dict()
+    for key, value in word_frequency.items():
+        if value >= minimum_apparitions:
+            new_vocabulary[key] = vocabulary[key]
+    count_vectorizer = bag_of_words(news_data, new_vocabulary)
+    return count_vectorizer
+
+
+def get_vocabulary_word_count(true, fake):
+    """ Pretty print the vocabulary sizes for each news category """
+    print("\n   Vocabulary Word Counts")
+    print("True news:", len(true))
+    print("Fake news:", len(fake))

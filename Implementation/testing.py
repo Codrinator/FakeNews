@@ -1,4 +1,5 @@
 
+
 def get_corpus_spaces(text):
     """ Roughly get initial number of words by counting spaces """
     space_count = 0
