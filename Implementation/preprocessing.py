@@ -2,6 +2,7 @@ from nltk.stem.snowball import SnowballStemmer
 from nltk import word_tokenize
 import numpy as np
 import random
+import math
 
 # Romanian stemmer
 RS = SnowballStemmer('romanian', ignore_stopwords=True)
@@ -139,11 +140,11 @@ def count_vectorizer_word_amount(news_data, vocabulary, number_of_words):
     return count_vectorizer
 
 
-def count_vectorizer_word_count(news_data, word_frequency, vocabulary, minimum_apparitions):
+def count_vectorizer_word_count(news_data, word_frequency, vocabulary, minimum):
     """ Get BoW for words that appear at least a chosen number of times """
     new_vocabulary = dict()
     for key, value in word_frequency.items():
-        if value >= minimum_apparitions:
+        if value >= minimum:
             new_vocabulary[key] = vocabulary[key]
     count_vectorizer = bag_of_words(news_data, new_vocabulary)
     return count_vectorizer
@@ -154,3 +155,44 @@ def get_vocabulary_word_count(true, fake):
     print("\n   Vocabulary Word Counts")
     print("True news:", len(true))
     print("Fake news:", len(fake))
+
+
+def tf_idf(count_vectorizer):
+    """ TF-IDF implementation """
+    total_words = len(count_vectorizer[0][1])
+
+    # tf
+    tf = []
+    for index in range(len(count_vectorizer)):
+        #article_words = len(merged_labeled_data[index][1])
+        article_words = 0
+        for word in count_vectorizer[index][1]:
+            article_words += word
+        article_tf = [count_vectorizer[index][0],[]]
+        for word in count_vectorizer[index][1]:
+            article_tf[1].append(word/(article_words+1))
+        tf.append(article_tf)
+
+    # df
+    df = [0]*total_words
+    for article in count_vectorizer:
+        counter = 0
+        for word in article[1]:
+            if word > 0:
+                df[counter] += 1
+            counter += 1
+
+    # idf
+    idf = [math.log(len(count_vectorizer)/(i+1)) for i in df]
+
+    # tf-idf
+    tf_idf = []
+    for article in tf:
+        article_tf_idf = [article[0], []]
+        counter = 0
+        for word in article[1]:
+            article_tf_idf[1].append(word * idf[counter])
+            counter += 1
+        tf_idf.append(article_tf_idf)
+
+    return tf_idf

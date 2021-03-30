@@ -1,0 +1,95 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{indentfirst}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=15mm,
+	top=8mm,
+	right=15mm,
+	bottom=13mm
+}
+\lstset{
+	frame=tb, 
+	tabsize=4, 
+	showstringspaces=false,
+	numbers=left, 
+	commentstyle=\color{green}, 
+	keywordstyle=\color{blue}, 
+	stringstyle=\color{red} 
+}
+\setlength{\parindent}{1.5cm}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+
+\author{Parfene Ioana}
+\title{\textbf{Fake news detection for Romanian}}
+
+\begin{document}
+	\maketitle
+	
+	\section{Introduction}
+	\par
+	\subsection{Motivation}	
+
+	
+	\section{Method}
+	
+	\subsection{Gathering Data}
+	\subsubsection{Web Sites}
+	\subsubsection{Crawling}
+	\subsubsection{Scraping}
+
+	\subsection{Preprocessing}
+	\subsubsection{Stop Words}
+	\subsubsection{Tokenization}
+	\subsubsection{Stemming}
+	
+	\subsection{Data Models}
+	\subsubsection{Bag of Words}
+	\subsubsection{TF-IDF}
+	
+	
+	\subsection{Classifiers}
+	\subsubsection{Naive Bayes}
+	\begin{figure}[!h]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
+			\hline
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{All} &  & \\ \hline 
+			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
+			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
+			\textbf{Result} & 82.5\% & 82.9\% & 82.6\% & 82.9\% & 90.3\% & 89.7\% & 87.4\% & 86.6\% & 93.3\% & 93.3\% & 73.0\% & 71.8\% \\ \hline 
+			\textbf{Time} & 0.01s & 0.01s & 0.01s & 0.01s & 0.09s & 0.08s & 0.05s & 0.06s & 1.76s & 1.67s & 0.98s & 1.08s \\ \hline 
+		\end{tabular}
+		\caption{\textbf{Naive Bayes}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
+	\end{figure}
+    
+	\subsubsection{Passive Aggressive Classifier}
+	\begin{figure}[!h]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
+			\hline
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{All} &  & \\ \hline 
+			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
+			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
+			\textbf{Result} & 83.0\% & 83.4\% & 84.3\% & 84.5\% & 93.1\% & 93.3\% & 93.5\% & 92.6\% & 94.3\% & 93.8\% & 94.2\% & 94.0\% \\ \hline 
+			\textbf{Time} & 0.03s & 0.03s & 0.03s & 0.03s & 0.13s & 0.13s & 0.17s & 0.15s & 2.50s & 2.3s & 2.79s & 2.63s \\ \hline 
+		\end{tabular}
+		\caption{\textbf{Passive Aggressive Classifier}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
+	\end{figure}    
+    
+	\section{Results}
+	
+	\section{Conclusion}
+	
+	\begin{thebibliography}{9}
+
+		
+	\end{thebibliography}  
+\end{document}
