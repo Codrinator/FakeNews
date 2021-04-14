@@ -14,7 +14,7 @@ def average_classifier(function, test_data):
     return str(accuracy_average) + "%, " + str((time.time()-start_time)/100) + " seconds"
 
 
-def test_classifier(classifier, classifier_function_name, vocabulary, merged_labeled_data):
+def test_classifier(classifier, classifier_name, vocabulary, merged_labeled_data):
     """ A model for testing all classifiers """
     print("\n   ***", classifier, "***")
 
@@ -23,32 +23,30 @@ def test_classifier(classifier, classifier_function_name, vocabulary, merged_lab
     print("  Number of articles:", len(merged_labeled_data))
     print("  Number of total words:", sum([len(item[1]) for item in merged_labeled_data]))
     print("  Number of distinct words:", len(vocabulary))
-    # All words
+
+    # All 19518 words
     print("   ^ALL WORDS^")
     count_vectorizer_all = preprocessing.count_vectorizer_word_amount(merged_labeled_data, vocabulary, sum([1 for i in vocabulary.items()]))
-    print("    Count vectorization, 10% test data:", average_classifier(classifier_function_name+"(test_data, 0.1)", count_vectorizer_all))
-    print("    Count vectorization, 20% test data:", average_classifier(classifier_function_name+"(test_data, 0.2)", count_vectorizer_all))
+    print("    Count vectorization, 10% test data:", average_classifier("c_i.classification(test_data, 0.1, '" + classifier_name + "')", count_vectorizer_all))
+    print("    Count vectorization, 20% test data:", average_classifier("c_i.classification(test_data, 0.2, '" + classifier_name + "')", count_vectorizer_all))
     tf_idf_all = preprocessing.tf_idf(count_vectorizer_all)
-    print("    TF-IDF vectorization, 10% test data:", average_classifier(classifier_function_name+"(test_data, 0.1)", tf_idf_all))
-    print("    TF-IDF vectorization, 20% test data:", average_classifier(classifier_function_name+"(test_data, 0.2)", tf_idf_all))
+    print("    TF-IDF vectorization, 10% test data:", average_classifier("c_i.classification(test_data, 0.1, '" + classifier_name + "')", tf_idf_all))
+    print("    TF-IDF vectorization, 20% test data:", average_classifier("c_i.classification(test_data, 0.2, '" + classifier_name + "')", tf_idf_all))
+
     # Most popular 1000 words
     print("   ^FIRST 1000 WORDS^")
     count_vectorizer_1000 = preprocessing.count_vectorizer_word_amount(merged_labeled_data, vocabulary, 1000)
-    print("    Count vectorization, 10% test data:", average_classifier(classifier_function_name+"(test_data, 0.1)", count_vectorizer_1000))
-    print("    Count vectorization, 20% test data:", average_classifier(classifier_function_name+"(test_data, 0.2)", count_vectorizer_1000))
+    print("    Count vectorization, 10% test data:", average_classifier("c_i.classification(test_data, 0.1, '" + classifier_name + "')", count_vectorizer_1000))
+    print("    Count vectorization, 20% test data:", average_classifier("c_i.classification(test_data, 0.2, '" + classifier_name + "')", count_vectorizer_1000))
     tf_idf_1000 = preprocessing.tf_idf(count_vectorizer_1000)
-    print("    TF-IDF vectorization, 10% test data:", average_classifier(classifier_function_name+"(test_data, 0.1)", tf_idf_1000))
-    print("    TF-IDF vectorization, 20% test data:", average_classifier(classifier_function_name+"(test_data, 0.2)", tf_idf_1000))
+    print("    TF-IDF vectorization, 10% test data:", average_classifier("c_i.classification(test_data, 0.1, '" + classifier_name + "')", tf_idf_1000))
+    print("    TF-IDF vectorization, 20% test data:", average_classifier("c_i.classification(test_data, 0.2, '" + classifier_name + "')", tf_idf_1000))
+
     # Most popular 200 words
     print("   ^FIRST 200 WORDS^")
     count_vectorizer_200 = preprocessing.count_vectorizer_word_amount(merged_labeled_data, vocabulary, 200)
-    print("    Count vectorization, 10% test data:", average_classifier(classifier_function_name+"(test_data, 0.1)", count_vectorizer_200))
-    print("    Count vectorization, 20% test data:", average_classifier(classifier_function_name+"(test_data, 0.2)", count_vectorizer_200))
+    print("    Count vectorization, 10% test data:", average_classifier("c_i.classification(test_data, 0.1, '" + classifier_name + "')", count_vectorizer_200))
+    print("    Count vectorization, 20% test data:", average_classifier("c_i.classification(test_data, 0.2, '" + classifier_name + "')", count_vectorizer_200))
     tf_idf_200 = preprocessing.tf_idf(count_vectorizer_200)
-    print("    TF-IDF vectorization, 10% test data:", average_classifier(classifier_function_name+"(test_data, 0.1)", tf_idf_200))
-    print("    TF-IDF vectorization, 20% test data:", average_classifier(classifier_function_name+"(test_data, 0.2)", tf_idf_200))
-
-    # Original data testing
-
-    #for item in merged_labeled_data:
-        #print(item[0])
+    print("    TF-IDF vectorization, 10% test data:", average_classifier("c_i.classification(test_data, 0.1, '" + classifier_name + "')", tf_idf_200))
+    print("    TF-IDF vectorization, 20% test data:", average_classifier("c_i.classification(test_data, 0.2, '" + classifier_name + "')", tf_idf_200))

@@ -36,14 +36,28 @@
 	\maketitle
 	
 	\section{Introduction}
-	\par
+	\par This article documents the process of using several classifiers in order to identify fake news from Romanian news web sites. The algorithms are tested on different vectorization procedures, lengths of tokenized vocabularies and test data sizes. The sought after information pertains to the accuracy and time of each classification run.
 	\subsection{Motivation}	
-
+	Fake news as a term is defined as the deliberate spread of misinformation via traditional news media or via social media. Its purpose relates to manipulating the masses for political, social, economical or cultural purposes, creating panic or "trolling" as a way of satisfying one's ego or personal view of fighting against a particular moral concept present in current societal norms. It can start with satirical or sarcastic intentions, but snowball and spread at an out of control rate, slowly changing and adapting each time it is shared. Regardless of origin and intent, fake news can rapidly cause damage on a high scale and lasting repercussions. This project aims to take the concept of fake news detection, which is widely known and researched, and apply it to the Romanian language, which is a far less explored territory. 
 	
 	\section{Method}
+	The process makes use of Romanian fake and true news articles scraped from real and satire news sites. The text is preprocessed through tokenization and stemming, vectorized and passed through several classifiers in order to find the one that yields the best accuracy and/or time. The detection method was researched through multiple articles and the chosen programming language is Python. As soon as these details were set, many articles were read, a lot of research was done, many tasks were created and a lot of steps were collected into a diagram.
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=12cm,height=12cm,keepaspectratio]{Pics/Diagram}
+		\caption{Project Architecture}
+	\end{figure}
 	
 	\subsection{Gathering Data}
+	Finding sites that could be crawled and scraped was quite a daunting task. Real news are easy to find, there are countless organizations that have been existing for decades, in television, radio or newspaper formats. Fake news was, on the other hand, tricky. Nobody will write a bunch of false articles, admit to them being fake, then collect them together in a nice place to be found. True malicious or ill-intended posts were impossible to gather, so the next best thing was, logically, satire. Sarcastic news sites are a fraction of the news site pool, especially in Romania. This narrowed down the amount of data that could be collected, as the true corpus size had to be the same as the fake one. 
+	\par There was also the question of how this restriction would apply into the real world. We used sarcastic articles and we tested them on more sarcastic articles. This can be very helpful against the rumor snowball effect that can lead to the creation of fake news, as well as the tone recognition problem faced by many people. Carefully crafted texts meant to destroy nations, create panic, mimic official and formal articles or exude authenticity would perform worse under this particular data set, but not go completely undetected. The topics chosen by the satire authors and their writings are more times than not meant to poke fun at pieces that circulate as fake news. They have their fair share of "true fake news" characteristics.
+	\par The final corpus size was 200 000 words, used across 1200 articles, equally spread between true and fake news.
+
 	\subsubsection{Web Sites}
+	 
+	\par
+
+
 	\subsubsection{Crawling}
 	\subsubsection{Scraping}
 
@@ -62,7 +76,7 @@
 	\begin{figure}[!h]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
-			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{All} &  & \\ \hline 
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
 			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
 			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
 			\textbf{Result} & 82.5\% & 82.9\% & 82.6\% & 82.9\% & 90.3\% & 89.7\% & 87.4\% & 86.6\% & 93.3\% & 93.3\% & 73.0\% & 71.8\% \\ \hline 
@@ -75,7 +89,7 @@
 	\begin{figure}[!h]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
-			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{All} &  & \\ \hline 
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
 			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
 			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
 			\textbf{Result} & 83.0\% & 83.4\% & 84.3\% & 84.5\% & 93.1\% & 93.3\% & 93.5\% & 92.6\% & 94.3\% & 93.8\% & 94.2\% & 94.0\% \\ \hline 
@@ -84,6 +98,32 @@
 		\caption{\textbf{Passive Aggressive Classifier}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
 	\end{figure}    
     
+	\subsubsection{Logistic Regression}
+	\begin{figure}[!h]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
+			\hline
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
+			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
+			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
+			\textbf{Result} & 86.1\% &85.9 \% & 85.5\% & 84.8\% &93.8\% &93.2\% &84.2\% & 82.9\% & 93.7\% &93.2 \% &72.1 \% &71.4\% \\ \hline 
+			\textbf{Time} & 0.10s & 0.09s & 0.04s & 0.04s & 0.25s & 0.22s & 0.13s &0.11s & 3.98s & 3.84s & 1.86s & 2.14s \\ \hline 
+		\end{tabular}
+		\caption{\textbf{Logistic Regression}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
+	\end{figure} 
+
+	\subsubsection{K Nearest Neighbour}
+	\begin{figure}[!h]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
+			\hline
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
+			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
+			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
+			\textbf{Result} & 75.7\% & 75.3\% & 73.7\% & 73.4\% & 75.0\% & 74.2\% & 73.3\% & 73.0\% & 71.6\% & 71.1\% & 67.8\% & 66.2\% \\ \hline 
+			\textbf{Time} &0.02s & 0.03s & 0.01s & 0.02s & 0.09s & 0.09s & 0.06s & 0.06s & 1.69s & 1.71s & 1.03s & 1.09s \\ \hline 
+		\end{tabular}
+		\caption{\textbf{K Nearest Neighbour(2 neighbours)}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
+	\end{figure}
+
 	\section{Results}
 	
 	\section{Conclusion}
