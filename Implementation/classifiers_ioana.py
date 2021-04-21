@@ -2,6 +2,7 @@ from sklearn.linear_model import PassiveAggressiveClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import MultinomialNB
+from sklearn import svm
 import preprocessing
 import data_models
 
@@ -14,3 +15,4 @@ def classification(sample_data, test_percentage, classificator):
     logistic_clf.fit(X_train, y_train)
     pred = logistic_clf.predict(X_test)
     return (y_test == pred).sum() * 100 / len(y_test)
+

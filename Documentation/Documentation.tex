@@ -51,17 +51,27 @@
 	\subsection{Gathering Data}
 	Finding sites that could be crawled and scraped was quite a daunting task. Real news are easy to find, there are countless organizations that have been existing for decades, in television, radio or newspaper formats. Fake news was, on the other hand, tricky. Nobody will write a bunch of false articles, admit to them being fake, then collect them together in a nice place to be found. True malicious or ill-intended posts were impossible to gather, so the next best thing was, logically, satire. Sarcastic news sites are a fraction of the news site pool, especially in Romania. This narrowed down the amount of data that could be collected, as the true corpus size had to be the same as the fake one. 
 	\par There was also the question of how this restriction would apply into the real world. We used sarcastic articles and we tested them on more sarcastic articles. This can be very helpful against the rumor snowball effect that can lead to the creation of fake news, as well as the tone recognition problem faced by many people. Carefully crafted texts meant to destroy nations, create panic, mimic official and formal articles or exude authenticity would perform worse under this particular data set, but not go completely undetected. The topics chosen by the satire authors and their writings are more times than not meant to poke fun at pieces that circulate as fake news. They have their fair share of "true fake news" characteristics.
-	\par The final corpus size was 200 000 words, used across 1200 articles, equally spread between true and fake news.
 
 	\subsubsection{Web Sites}
-	 
-	\par
-
+	 The final corpus has 200 000 words, used across 1200 articles, equally spread between the two categories. There were 8 sites crawled and scraped, half for true news, half for satire.
+	\begin{figure}[!h]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l|||}
+			\hline
+			\textbf{Category} &  & \textbf{True} & \textbf{News}& & &\textbf{Fake} & \textbf{News} &  \\ \hline 
+			\textbf{Web Sites} & \textbf{ProTV} & \textbf{Digi24} & \textbf{Libertatea} & \textbf{Realitatea} &\textbf{TNR} & \textbf{Cațavencii} & \textbf{7lucruri} & \textbf{TimpuriGrele} \\ \hline
+			\textbf{Articles} & 124 &89 &91 & 108 &42 & 156 &502 & 96  \\ \hline 
+			\textbf{Words} & 41,796 & 69,800 & 41,981 & 46,508 & 7,917 & 98,544 & 055,899 &37,690  \\ \hline 
+		\end{tabular}
+		\caption{\textbf{Web Site Corpus Distribution}}
+	\end{figure} 
 
 	\subsubsection{Crawling}
+	The article link gathering was done through a process called "crawling", which means recursively finding and saving all the links found on a certain web page. Those saved links are used to continue the search, until no more are found or until a set limit. Some websites were tough to crawl, as they only advertised recent articles. This lead to a disproportionate distribution of total words obtained across all websites, but he main goal of finding equal amounts of true and fake news was met. The implementation was relatively easy, done using Python libraries.
 	\subsubsection{Scraping}
-
-	\subsection{Preprocessing}
+	The actual downloading of the article text is called scraping. It involves using the HTML tags of the web sites in order to locate the content, which was quick as all the news sources fit into a pattern and only required one function with different inputs to scrape.
+	
+\subsection{Preprocessing}
+	The articles had to be preprocessed before being passed through the classifiers. The first step was combining the title and content of each piece into one string. The second step was removing the stop words, then turning the string into individual words. The last process chosen in this particular implementation was stemming, which means reducing words to a short root that represents the differently-spelled versions of a certain notion.
 	\subsubsection{Stop Words}
 	\subsubsection{Tokenization}
 	\subsubsection{Stemming}
@@ -122,6 +132,19 @@
 			\textbf{Time} &0.02s & 0.03s & 0.01s & 0.02s & 0.09s & 0.09s & 0.06s & 0.06s & 1.69s & 1.71s & 1.03s & 1.09s \\ \hline 
 		\end{tabular}
 		\caption{\textbf{K Nearest Neighbour(2 neighbours)}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
+	\end{figure}
+
+	\subsubsection{Support-vector machine}
+	\begin{figure}[!h]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
+			\hline
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
+			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
+			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
+			\textbf{Result} & 86.1\% &85.9 \% & 75.5\% & 74.8\% &90.1\% &89.2\% &81.2\% & 79.9\% & 92.7\% &91.2 \% &90.1 \% &89.4\% \\ \hline  
+			\textbf{Time} &0.32s & 0.33s & 0.31s & 0.32s & 1.09s & 1.09s & 1.06s & 1.06s & 20.69s & 20.71s & 15.03s & 16.09s \\ \hline 
+		\end{tabular}
+		\caption{\textbf{SVM}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
 	\end{figure}
 
 	\section{Results}
