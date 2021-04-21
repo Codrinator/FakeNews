@@ -29,5 +29,5 @@ if __name__ == "__main__":
     vocabulary = preprocessing.get_vocabulary(merged_labeled_data, word_frequency)
 
     # Test something
-    testing.test_classifier("KNN", "KNeighborsClassifier(n_neighbors=2)", vocabulary, merged_labeled_data)
+    testing.test_classifier("AdaBoost", "AdaBoostClassifier()", vocabulary, merged_labeled_data)
 
