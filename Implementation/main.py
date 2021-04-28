@@ -29,5 +29,6 @@ if __name__ == "__main__":
     vocabulary = preprocessing.get_vocabulary(merged_labeled_data, word_frequency)
 
     # Test something
-    testing.test_classifier("GaussianMixture", 'GaussianMixture(max_iter = 30)', vocabulary, merged_labeled_data)
-
+    testing.test_classifier("Voting Classifier", "LogisticRegression(),RandomForestClassifier(),KNeighborsClassifier()",
+                            vocabulary, merged_labeled_data, "c_i.voting_classifier")
+    #testing.test_classifier("RandomForest", 'RandomForestClassifier()', vocabulary, merged_labeled_data, "c_i.classification")

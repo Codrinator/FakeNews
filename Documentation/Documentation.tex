@@ -96,7 +96,14 @@ For better text comprehension in machine learning applications, the performance 
 	
 	\subsection{Classifiers}
 	\subsubsection{Naive Bayes}
-	\begin{figure}[H]
+	\par Naive Bayes is a simple statistical classificator based on the Bayes Theorem. It follows a few short steps: it determines the prior likelihood for the given labels, calculates the probability of each attribute for each label and then allocates the label with the highest score derived from the theorem. 
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=4cm,height=2cm,keepaspectratio]{Pics/NaiveBayes}
+		\caption{Bayes Theorem}
+	\end{figure}
+	\par Naive Bayes is fast and accurate, performs well with discrete variables, it is efficient on large datasets, has a low computation cost and works well on text problems.
+	\begin{figure}[!h]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
 			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
@@ -107,6 +114,7 @@ For better text comprehension in machine learning applications, the performance 
 		\end{tabular}
 		\caption{\textbf{Naive Bayes}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
 	\end{figure}
+	\par Naive Bayes had the best time-accuracy score in the whole experiment. There are classifiers than performed better with less words, but overall it was consistently superior.
     
 	\subsubsection{Passive Aggressive Classifier}
 	\begin{figure}[H]
@@ -159,19 +167,20 @@ For better text comprehension in machine learning applications, the performance 
     \item SVMs do not have probability estimates directly; these are estimated using a time-consuming five-fold cross-validation procedure.
     \item avoiding over-fitting when selecting Kernel functions and regularization terms is critical if the number of features is much greater than the number of samples.
     \end{itemize}
-    Basically, SVM considers all of the data points and generates a line called a "Hyperplane" that separates the two groups: fake and true news. A "decision boundary" is created.
-
-	\begin{figure}[H]
+   \par Basically, SVM considers all of the data points and generates a line called a "Hyperplane" that separates the two groups: fake and true news. A "decision boundary" is created.
+	\par Because of the long training period, SVM are not appropriate for large datasets, and they also take longer to learn than, let's say, Naive Bayes. They have issues with overlapping classes and are also affected by the kernel type used, which in this case was linear.
+	\begin{figure}[!h]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
 			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
 			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
 			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
-			\textbf{Result} & 86.1\% &85.9 \% & 75.5\% & 74.8\% &90.1\% &89.2\% &81.2\% & 79.9\% & 92.7\% &91.2 \% &90.1 \% &89.4\% \\ \hline  
-			\textbf{Time} &0.32s & 0.33s & 0.31s & 0.32s & 1.09s & 1.09s & 1.06s & 1.06s & 20.69s & 20.71s & 15.03s & 16.09s \\ \hline 
+			\textbf{Result} & 86.1\% &85.2 \% & 86.8\% & 85.9\% &92.4\% &92.8\% &91.7\% & 90.0\% & 94.1\% &92.6 \% &82.3 \% &80.6\% \\ \hline  
+			\textbf{Time} &0.20s & 0.12s & 0.06s & 0.06s & 0.34s &0.32s & 0.61s & 0.50s & 84.59s & 79.05s & 158.10s & 174.49s \\ \hline 
 		\end{tabular}
-		\caption{\textbf{SVM}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
+		\caption{\textbf{SVM}, Accuracy Table, \textbf{Average} out of \textbf{10} runs}
 	\end{figure}
+	\par This is by far the classification that took the longest, even tough it only had 10 runs. It is outperformed by other algorithms in both accuracy and time, so it is not worth it in this situation. An interesting observation is that TF-IDF starts to slowly take longer than Bow with the size increase, which is the opposite of most other algorithms. 
 
 	\subsubsection{Decision Tree Classifier}
 	Decision Trees (DTs) are a supervised learning system for classification and regression that is non-parametric. The aim is to learn basic decision rules from data features to build a model that predicts the value of a target variable. A tree is an approximation to a piecewise constant.
@@ -179,7 +188,7 @@ For better text comprehension in machine learning applications, the performance 
 \begin{itemize}
 \item decision trees need less effort for data preparation during pre-processing than other algorithms.
 \item the model is based on a white box. If a scenario can be observed in a model, boolean logic can easily clarify the situation.
-\item even if the true model, from which the data were produced, violates some of its assumptions, it still performs well.
+\item even if the true model, from which the data were produced, violates some of its assumptions, it still performs well.
 \end{itemize}
 Some of the \textbf{disadvantages} of using Decision Tree classifier:
 \begin{itemize}
@@ -199,7 +208,23 @@ Some of the \textbf{disadvantages} of using Decision Tree classifier:
 		\end{tabular}
 		\caption{\textbf{Decision Tree Classifier}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
 	\end{figure}
-	
+
+	\subsubsection{Random Forest Classifier}
+	\par \textit{``A random forest is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting.''}.(Scikit-learn)
+	\par As the definition above states, this classifier merges different types of decision tree algorithms to form a more powerful prediction model. It is supervised and can be used for both regression and classification tasks. The steps intertwine as follows: a decision tree is built on a random amount of samples picked from the data set, the process gets repeated for a chosen number of times and, at the end, for classification, the label is assigned based on the majority vote of the trees.
+	\begin{figure}[!h]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
+			\hline
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
+			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
+			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
+			\textbf{Result} &87.5\% & 86.3\% & 88.8\% & 88.5\% & 94.0\% & 92.5\% & 92.4\% & 92.8\% & 92.0\% & 90.0\% & 92.3\% & 92.0\% \\ \hline 
+			\textbf{Time} & 0.30s & 0.28s & 0.35s & 0.32s & 0.57s & 0.54s & 0.59s & 0.54s & 7.44s & 6.64s & 6.34s & 5.49s \\ \hline 
+		\end{tabular}
+		\caption{\textbf{Random Forest Classifier)}, Accuracy Table, \textbf{Average} out of \textbf{10} runs}
+	\end{figure}
+	\par This algorithm is a readily implemented classification method that will be tackled later down the line in this article, which is prediction model merging. It is somewhat more simple, as it only focuses on decision tree models. It performed much better than the original Decision Tree Classifier, who was stuck in the 80-89\% accuracy and it took less time, making it superior on all terms. 	
+
 	\subsubsection{Ada Boost Classifier}
 	An AdaBoost classifier is a meta-estimator that starts by fitting a classifier on the original dataset, then 
 fits additional copies of the classifier on the same dataset, but adjusts the weights of incorrectly classified 
@@ -210,7 +235,7 @@ instances such that subsequent classifiers concentrate more on difficult cases. 
 \item it may be less prone to overfitting than other algorithms in certain situations.
 \item individual learners can be slow, but as long as their output is better than random guessing, the final model will converge to a good learner.
 \end{itemize}
-\\
+
 Among the \textbf{disadvantages} of this classifier, one that pertains to our project is:
 \begin{itemize}
 \item AdaBoost is vulnerable to outliers and noisy data.
@@ -241,7 +266,7 @@ Some of the \textbf{advantages} when employing usage of this classifier:
 \item can warm-start the positions of centroids.
 \item easily adapts to new examples.
 \end{itemize}
-\\
+
 Among the \textbf{disadvantages} of this classifier:
 \begin{itemize}
 \item choosing K manually.
@@ -259,6 +284,47 @@ Among the \textbf{disadvantages} of this classifier:
 			\textbf{Time} &0.1s & 0.1s & 0.2s & 0.2s & 0.5s & 0.4s & 0.5s & 0.5s & 7.8s & 7.1s & 7.7s & 6.7s \\ \hline 
 		\end{tabular}
 		\caption{\textbf{K-Means Classifier}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
+	\end{figure}
+
+\subsubsection{Voting Classifier}
+	\par The Voting Classifier
+	\paragraph{2.4.8.1 Random Forest Classifier, Logistic Regression, K Nearest Neighbours}
+	\begin{figure}[!h]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
+			\hline
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
+			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
+			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
+			\textbf{Result} & 87.3\% & 86.4\% & 84.8\% & 85.6\% & 93.7\% & 93.9\% & 90.4\% & 89.9\% & 91.2\% & 91.1\% & 85.0\% & 85.7\% \\ \hline 
+			\textbf{Time} &0.42s & 0.39s & 0.42s & 0.38s & 0.96s &0.81s & 0.94s & 0.74s & 12.7s &12.2s & 10.0s &8.68s \\ \hline 
+		\end{tabular}
+		\caption{\textbf{Random Forest, Logistic Regression, KNN}, Accuracy Table, \textbf{Average} out of \textbf{10} runs}
+	\end{figure}
+	\paragraph{2.4.8.2 Naive Bayes Classifier, Logistic Regression, Passive Aggressive Classifier}
+	
+	\par This particular set of classifiers was chosen based on the top accuracy performances for all the data. 
+	\begin{figure}[!h]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
+			\hline
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
+			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
+			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
+			\textbf{Result} & 84.1\% & 84.2\% & 85.2\% & 84.7\% & 93.8\% & 93.3\% & 87.5\% & 85.8\% & 93.5\% & 94.1\% & 74.4\% & 73.7\%\\ \hline 
+			\textbf{Time} & 0.15s & 0.13s & 0.09s & 0.08s & 0.41s & 0.41s & 0.34s & 0.32s &7.63s & 7.68.s & 6.48s  & 6.44s\\ \hline 
+		\end{tabular}
+		\caption{\textbf{Naive Bayes, Logistic Regression, Passive Aggressive}, Accuracy Table, \textbf{Average} out of \textbf{10} runs}
+	\end{figure}
+	\paragraph{2.4.8.3 Naive Bayes Classifier, RandomForestClassifier, Passive Aggressive Classifier}
+	\begin{figure}[!h]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
+			\hline
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
+			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
+			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
+			\textbf{Result} & 86.8\% & 86.9\% & 87.0\% & 85.8\% & 94.2\% & 93.3\% & 93.8\% & 93.4\% & 93.2\% & 94.5\% & 93.8\% & 91.9\% \\ \hline 
+			\textbf{Time} &0.45s & 0.38s & 0.42s & 0.45s & 0.90s & 0.81s & 0.86s &0.95s & 11.3s &10.3s & 10.5s &9.36s \\ \hline 
+		\end{tabular}
+		\caption{\textbf{Naive Bayes, RandomForest, Passive Aggressive Classifier}, Accuracy Table, \textbf{Average} out of \textbf{10} runs}
 	\end{figure}
 
 	\section{Results}
