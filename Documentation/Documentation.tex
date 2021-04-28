@@ -9,6 +9,7 @@
 \usepackage{amssymb}
 \usepackage{mathtools}
 \usepackage{geometry}
+\usepackage{float}
 \geometry{
 	a4paper,
 	total={170mm,257mm},
@@ -29,7 +30,7 @@
 \setlength{\parindent}{1.5cm}
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 
-\author{Parfene Ioana}
+\author{Parfene Ioana, Panainte Alexandru, Donciu Codrin}
 \title{\textbf{Fake news detection for Romanian}}
 
 \begin{document}
@@ -73,9 +74,21 @@
 \subsection{Preprocessing}
 	The articles had to be preprocessed before being passed through the classifiers. The first step was combining the title and content of each piece into one string. The second step was removing the stop words, then turning the string into individual words. The last process chosen in this particular implementation was stemming, which means reducing words to a short root that represents the differently-spelled versions of a certain notion.
 	\subsubsection{Stop Words}
+	This is the beginning of preparing the extracted texts for classifiers to properly label the data further down the line. Firstly, an extensive stop words list is needed, that we can identify in our texts and have them removed.\\After this, the actual process is a relatively easy task, as the app only needs to compare the raw data with this list of unnecessary words, and have them removed entirely.\\
+	Multiple sources for choosing these stop words have been used, and they can be found in the references section of this document.
 	\subsubsection{Tokenization}
+Tokenization is the method of breaking down a large amount of text into smaller pieces called \textbf{tokens}. These tokens are extremely useful for pattern recognition and are used as a starting point for stemming and lemmatization. Tokenization here is also be used to replace sensitive data elements with non-sensitive ones.
+We use the method \textbf{word\_tokenize()} to split a sentence into words. \\
+For better text comprehension in machine learning applications, the performance of the word tokenizer in NLTK can be translated to a Data Frame.
 	\subsubsection{Stemming}
-	
+	Stemming is the process of eliminating a word's suffix and reducing it to its \textbf{root word}. The main goal is to reduce each word's inflectional forms to a single base word, root word, or stem word. Inflection is the process of changing a word to convey different grammatical categories including tense, case, voice, aspect, person, number, gender, mood, animacy, and definiteness.
+	For this project, we have employed the \textbf{Natural Language Toolkit} (NLTK) library and its \textbf{SnowballStemmer()} method, language parameter set on 'romanian' and stopwords ignore enabled, as the stopwords used were from a different library and not the NLTK native one.
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=12cm,height=12cm,keepaspectratio]{Pics/NLTK screenshot}
+		\caption{Usage of SnowballStemmer}
+	\end{figure}
+	All of the data is stored in \textbf{.json} files after checking for satisfactory results with the stemming, tokenization and stop words removal processes. Further down the line, the classifiers we have implemented will have these files as input for their algorithms. 
 	\subsection{Data Models}
 	\subsubsection{Bag of Words}
 	\subsubsection{TF-IDF}
@@ -83,7 +96,7 @@
 	
 	\subsection{Classifiers}
 	\subsubsection{Naive Bayes}
-	\begin{figure}[!h]
+	\begin{figure}[H]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
 			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
@@ -96,7 +109,7 @@
 	\end{figure}
     
 	\subsubsection{Passive Aggressive Classifier}
-	\begin{figure}[!h]
+	\begin{figure}[H]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
 			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
@@ -109,7 +122,7 @@
 	\end{figure}    
     
 	\subsubsection{Logistic Regression}
-	\begin{figure}[!h]
+	\begin{figure}[H]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
 			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
@@ -122,7 +135,7 @@
 	\end{figure} 
 
 	\subsubsection{K Nearest Neighbour}
-	\begin{figure}[!h]
+	\begin{figure}[H]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
 			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
@@ -135,7 +148,20 @@
 	\end{figure}
 
 	\subsubsection{Support-vector machine}
-	\begin{figure}[!h]
+	Support vector machines (SVMs) are a class of supervised learning methods for classification, regression, and identification of outliers. Some of the \textbf{advantages} of SVMs, that are relevant to our project, can be:
+	\begin{itemize}
+    \item it performs effectively in high-dimensional spaces.
+    \item it is memory efficient since it uses a subset of training points (called support vectors) in the decision function.
+    \item when the number of dimensions exceeds the number of samples, the method is still accurate.
+    \end{itemize}
+    \textbf{Disadvantages} of this method consist of:
+    \begin{itemize}
+    \item SVMs do not have probability estimates directly; these are estimated using a time-consuming five-fold cross-validation procedure.
+    \item avoiding over-fitting when selecting Kernel functions and regularization terms is critical if the number of features is much greater than the number of samples.
+    \end{itemize}
+    Basically, SVM considers all of the data points and generates a line called a "Hyperplane" that separates the two groups: fake and true news. A "decision boundary" is created.
+
+	\begin{figure}[H]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
 			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
@@ -148,31 +174,92 @@
 	\end{figure}
 
 	\subsubsection{Decision Tree Classifier}
-	\begin{figure}[!h]
+	Decision Trees (DTs) are a supervised learning system for classification and regression that is non-parametric. The aim is to learn basic decision rules from data features to build a model that predicts the value of a target variable. A tree is an approximation to a piecewise constant.
+	\textbf{Advantages} of DTs:
+\begin{itemize}
+\item decision trees need less effort for data preparation during pre-processing than other algorithms.
+\item the model is based on a white box. If a scenario can be observed in a model, boolean logic can easily clarify the situation.
+\item even if the true model, from which the data were produced, violates some of its assumptions, it still performs well.
+\end{itemize}
+Some of the \textbf{disadvantages} of using Decision Tree classifier:
+\begin{itemize}
+\item as compared to other algorithms, a decision tree's calculation can become very complicated at times.
+\item any minor change in the data will result in a significant change in the decision tree's structure, resulting in instability.
+\item the training time for a decision tree is usually longer
+\item because of the difficulty and time required, decision tree training is relatively costly
+\end{itemize}
+	\begin{figure}[H]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
 			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
 			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
 			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
-			\textbf{Result} & 89.5\% & 88.4\% & 87.2\% & 87.7\% & 88.2\% & 88.3\% & 87.1\% & 86.7\% & 80.5\% & 80.1\% & 80.8\% & 80.1\% \\ \hline 
-			\textbf{Time} &11.8s & 9.5s & 9.9s & 7.0s & 0.23s & 0.19s & 0.26s & 0.22s & 0.05s & 0.05s & 0.06s & 0.05s \\ \hline 
+			\textbf{Result} & 80.6\% & 80.2\% & 80.9\% & 80.2\% & 88.2\% & 88.3\% & 87.1\% & 86.7\% & 89.6\% & 88.4\% & 87.2\% & 87.7\% \\ \hline 
+			\textbf{Time} & 0.05s & 0.05s & 0.06s & 0.05s & 0.23s & 0.19s & 0.26s & 0.22s & 11.8s & 9.5s & 9.9s & 7.0s \\ \hline 
 		\end{tabular}
 		\caption{\textbf{Decision Tree Classifier}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
 	\end{figure}
 	
-			\subsubsection{Ada Boost Classifier}
-	\begin{figure}[!h]
+	\subsubsection{Ada Boost Classifier}
+	An AdaBoost classifier is a meta-estimator that starts by fitting a classifier on the original dataset, then 
+fits additional copies of the classifier on the same dataset, but adjusts the weights of incorrectly classified 
+instances such that subsequent classifiers concentrate more on difficult cases. \\
+\textbf{Advantages} of using this classifier:
+\begin{itemize}
+\item AdaBoost is often referred to as the strongest out-of-the-box classifier because it uses decision trees as poor learners.
+\item it may be less prone to overfitting than other algorithms in certain situations.
+\item individual learners can be slow, but as long as their output is better than random guessing, the final model will converge to a good learner.
+\end{itemize}
+\\
+Among the \textbf{disadvantages} of this classifier, one that pertains to our project is:
+\begin{itemize}
+\item AdaBoost is vulnerable to outliers and noisy data.
+When the data isn't easily amenable to a particular separation plane (with acceptable results based on the model objective. 
+For example, weak learners must be better than guessing at random), making it more difficult for the meta-learner to converge to a strong learner without overfitting.
+As a result, we can conclude that AdaBoost performs better when the dataset is free of outliers.
+\end{itemize}
+	\begin{figure}[H]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
 			\hline
 			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
 			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
 			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
-			\textbf{Result} & 93.4\% & 93.2\% & 92.2\% & 92.9\% & 93.5\% & 93.1\% & 92.8\% & 92.4\% & 86.3\% & 86.8\% & 86.2\% & 86.1\% \\ \hline 
-			\textbf{Time} &31.9s & 28.5s & 32.4s & 29.3s & 1.3s & 1.1s & 1.5s & 1.3s & 0.2s & 0.2s & 0.3s & 0.3s \\ \hline 
+			\textbf{Result} & 86.3\% & 86.8\% & 86.2\% & 86.1\% & 93.5\% & 93.1\% & 92.8\% & 92.4\% & 93.5\% & 93.2\% & 92.9\% & 92.9\% \\ \hline 
+			\textbf{Time} &0.2s & 0.2s & 0.3s & 0.3s & 1.3s & 1.1s & 1.5s & 1.3s &31.9s & 28.5s & 32.4s & 29.3s \\ \hline 
 		\end{tabular}
 		\caption{\textbf{Ada Boost Classifier}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
 	\end{figure}
-
+	
+	\subsubsection{K-Means Classifier}
+K-means is a centroid-based or distance-based algorithm in which the distances between points are calculated to allocate a point to a cluster.
+Each cluster in K-Means is associated with a centroid. \\
+Some of the \textbf{advantages} when employing usage of this classifier:
+\begin{itemize}
+\item relatively simple to implement.
+\item scales well to large data sets.
+\item guarantees convergence towards real/fake conclusion.
+\item can warm-start the positions of centroids.
+\item easily adapts to new examples.
+\end{itemize}
+\\
+Among the \textbf{disadvantages} of this classifier:
+\begin{itemize}
+\item choosing K manually.
+\item being dependent on initial values
+\item clustering data pf varying sizes and density
+\item scaling with number of dimensions
+\end{itemize}
+	\begin{figure}[H]
+		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
+			\hline
+			\textbf{Words} &  & \textbf{200} & & & &\textbf{1000} & & & & \textbf{19518} &  & \\ \hline 
+			\textbf{Model} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} &\textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I} & \textbf{BoW} & \textbf{BoW} & \textbf{T-I} & \textbf{T-I}\\ \hline
+			\textbf{Test} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} & \textbf{10\%} & \textbf{20\%} \\ \hline \hline  
+			\textbf{Result} & 8.4\% & 15.2\% & 15.9\% & 12.1\% & 12.3\% & 13\% & 13.9\% & 11.9\% & 10.4\% & 12.8\% & 14.6\% & 18.5\% \\ \hline 
+			\textbf{Time} &0.1s & 0.1s & 0.2s & 0.2s & 0.5s & 0.4s & 0.5s & 0.5s & 7.8s & 7.1s & 7.7s & 6.7s \\ \hline 
+		\end{tabular}
+		\caption{\textbf{K-Means Classifier}, Accuracy Table, \textbf{Average} out of \textbf{100} runs}
+	\end{figure}
 
 	\section{Results}
 	
