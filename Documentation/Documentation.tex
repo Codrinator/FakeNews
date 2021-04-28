@@ -96,6 +96,7 @@ For better text comprehension in machine learning applications, the performance 
 	
 	\subsection{Classifiers}
 	\subsubsection{Naive Bayes}
+	\par \textit{``The multinomial Naive Bayes classifier is suitable for classification with discrete features (e.g., word counts for text classification). The multinomial distribution normally requires integer feature counts. However, in practice, fractional counts such as tf-idf may also work.''}.(Scikit-learn)
 	\par Naive Bayes is a simple statistical classificator based on the Bayes Theorem. It follows a few short steps: it determines the prior likelihood for the given labels, calculates the probability of each attribute for each label and then allocates the label with the highest score derived from the theorem. 
 	\begin{figure}[!h]
 		\centering
@@ -287,7 +288,7 @@ Among the \textbf{disadvantages} of this classifier:
 	\end{figure}
 
 \subsubsection{Voting Classifier}
-	\par The Voting Classifier
+	\par \textit{``The idea behind the VotingClassifier is to combine conceptually different machine learning classifiers and use a majority vote or the average predicted probabilities (soft vote) to predict the class labels. Such a classifier can be useful for a set of equally well performing model in order to balance out their individual weaknesses.''}.(Scikit-learn)
 	\paragraph{2.4.8.1 Random Forest Classifier, Logistic Regression, K Nearest Neighbours}
 	\begin{figure}[!h]
 		\begin{tabular}{||c||l|l|l|l||l|l|l|l||l|l|l|l||}
